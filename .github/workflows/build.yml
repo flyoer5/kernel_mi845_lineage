@@ -102,16 +102,25 @@ jobs:
           cat >anykernel.sh <<EOF
           properties() { '
           kernel.string=Kernel for ${{ matrix.device }}
-          device.name1=${{ matrix.device }}
           do.devicecheck=1
-          '; }
-          ramdisk_compression=auto
-          patch_vbmeta_flag=auto
-          is_slot_device=auto
-          block=auto
-          . tools/ak3-core.sh
-          split_boot
-          flash_boot
+          do.modules=0
+          do.systemless=0
+          do.cleanup=1
+          do.cleanuponabort=0
+          device.name1=${{ matrix.device }}
+          '; } # end properties
+
+          # AnyKernel3 要求这些变量为大写并以分号结尾，
+          # 小写会导致 BLOCK 为空、分区探测失败（Unable to determine partition）。
+          BLOCK=boot;
+          IS_SLOT_DEVICE=0;
+          RAMDISK_COMPRESSION=auto;
+          PATCH_VBMETA_FLAG=auto;
+
+          . tools/ak3-core.sh;
+
+          split_boot;
+          flash_boot;
           EOF
           zip -qr9 Anykernel3-${{ matrix.device }}.zip * -x .git .github README.md *placeholder
 
