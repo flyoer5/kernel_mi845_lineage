@@ -84,11 +84,7 @@ jobs:
             ARCH=arm64
             CROSS_COMPILE=aarch64-linux-gnu-
             CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-          CONFIG_FILES:
-            vendor/xiaomi/mi845_defconfig
-            vendor/xiaomi/${{ matrix.device }}.config
-            lxc.config
-            droidspaces.config
+          CONFIG_FILES: vendor/xiaomi/mi845_defconfig vendor/xiaomi/${{ matrix.device }}.config lxc.config droidspaces.config
         run: |
           export PATH=$GITHUB_WORKSPACE/clang/bin:$PATH
           export KBUILD_BUILD_USER=${{ github.repository_owner }}
